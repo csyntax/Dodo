@@ -18,6 +18,7 @@
         }
     }
 })( window.jQuery || window );
+
 (function($) {
     var ua = navigator.userAgent.toLowerCase(),
         match,
