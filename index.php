@@ -19,14 +19,16 @@
 	 		    $.history.load(hash);
 	 		    $('a[rel=ajax]').removeClass('selected');
 	 		    $(this).addClass('selected');
-	 		    $('#body').hide();
-	 		    getPage();
 			    return false;
 		    });
 	    });
 	
 	    function pageload(hash) {
-		    if (hash){getPage()};
+		    if (hash){
+				getPage();
+			} else {
+				return 0;
+			}
 	    }
 		
 	    function getPage() {
@@ -38,8 +40,7 @@
 			    cache: false,
 			    success: function (html) {
 				    $('#content').html(html);
-				    $('#body').fadeIn('slow');
-			    }
+				}
 		    });
 	    }
 	</script>
