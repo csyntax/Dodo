@@ -1,12 +1,11 @@
 /**
-* jQuery History
+* Dodo
 *
 * @author: Ivan Cvetomirov Ivanov
 * @License: MIT
-* @version: 1.0.1
+* @version: 1.0.2
 **/
 
-//jQuery-browser
 (function($) {
     var ua = navigator.userAgent.toLowerCase(),
         match,
@@ -28,7 +27,7 @@
     }
 })( window.jQuery || window );
 
-//jQuery-platform
+
 (function($) {
     var ua = navigator.userAgent.toLowerCase(),
         match,
@@ -52,12 +51,12 @@
 })( window.jQuery || window );
  
 (function($) {
-	function History() {
+	function Dodo() {
 		this._curHash = '';
 		this._callback = function(hash){};
 	};
 
-	$.extend(History.prototype, {
+	$.extend(Dodo.prototype, {
 		init: function(callback) {
 			this._callback = callback;
 			this._curHash = location.hash;
@@ -67,15 +66,15 @@
 					this._curHash = '#';
 				}
 		
-				$("body").prepend('<iframe id="jQuery_history" style="display: none;"></iframe>');
-				var iframe = $("#jQuery_history")[0].contentWindow.document;
+				$("body").prepend('<iframe id="jQuery_Dodo" style="display: none;"></iframe>');
+				var iframe = $("#jQuery_Dodo")[0].contentWindow.document;
 				iframe.open();
 				iframe.close();
 				iframe.location.hash = this._curHash;
 			} else if ($.browser.safari) {			
-				this._historyBackStack = [];
-				this._historyBackStack.length = history.length;
-				this._historyForwardStack = [];
+				this._DodoBackStack = [];
+				this._DodoBackStack.length = Dodo.length;
+				this._DodoForwardStack = [];
 				this._isFirst = true;
 				this._dontCheck = false;
 			}
@@ -84,52 +83,52 @@
 			setInterval(this._check, 100);
 		},
 		add: function(hash) {		
-			this._historyBackStack.push(hash);		
-			this._historyForwardStack.length = 0; 
+			this._DodoBackStack.push(hash);		
+			this._DodoForwardStack.length = 0; 
 			this._isFirst = true;
 		},	
 		_check: function() {
 			if($.browser.msie) {			
-				var ihistory = $("#jQuery_history")[0];
-				var iframe = ihistory.contentDocument || ihistory.contentWindow.document;
+				var iDodo = $("#jQuery_Dodo")[0];
+				var iframe = iDodo.contentDocument || iDodo.contentWindow.document;
 				var current_hash = iframe.location.hash;
 				
-				if(current_hash != $.history._curHash) {			
+				if(current_hash != $.Dodo._curHash) {			
 					location.hash = current_hash;
-					$.history._curHash = current_hash;
-					$.history._callback(current_hash.replace(/^#/, ''));
+					$.Dodo._curHash = current_hash;
+					$.Dodo._callback(current_hash.replace(/^#/, ''));
 				}
 			} else if ($.browser.safari) {
-				if (!$.history._dontCheck) {
+				if (!$.Dodo._dontCheck) {
 				
-					var historyDelta = history.length - $.history._historyBackStack.length;				
+					var DodoDelta = Dodo.length - $.Dodo._DodoBackStack.length;				
 				
-					if (historyDelta) { 
-						$.history._isFirst = false;
-						if (historyDelta < 0) {
-							for (var i = 0; i < Math.abs(historyDelta); i++) $.history._historyForwardStack.unshift($.history._historyBackStack.pop());
+					if (DodoDelta) { 
+						$.Dodo._isFirst = false;
+						if (DodoDelta < 0) {
+							for (var i = 0; i < Math.abs(DodoDelta); i++) $.Dodo._DodoForwardStack.unshift($.Dodo._DodoBackStack.pop());
 						} else { 
-							for (var i = 0; i < historyDelta; i++) $.history._historyBackStack.push($.history._historyForwardStack.shift());
+							for (var i = 0; i < DodoDelta; i++) $.Dodo._DodoBackStack.push($.Dodo._DodoForwardStack.shift());
 						}
-					var cachedHash = $.history._historyBackStack[$.history._historyBackStack.length - 1];
+					var cachedHash = $.Dodo._DodoBackStack[$.Dodo._DodoBackStack.length - 1];
 					if (cachedHash != undefined) {
-						$.history._curHash = location.hash;
-						$.history._callback(cachedHash);
+						$.Dodo._curHash = location.hash;
+						$.Dodo._callback(cachedHash);
 					}
-				} else if ($.history._historyBackStack[$.history._historyBackStack.length - 1] == undefined && !$.history._isFirst){					
+				} else if ($.Dodo._DodoBackStack[$.Dodo._DodoBackStack.length - 1] == undefined && !$.Dodo._isFirst){					
 					if (document.URL.indexOf('#') >= 0) {
-						$.history._callback(document.URL.split('#')[1]);
+						$.Dodo._callback(document.URL.split('#')[1]);
 					} else {
-						$.history._callback('');
+						$.Dodo._callback('');
 					}
-					$.history._isFirst = true;
+					$.Dodo._isFirst = true;
 				}
 			}
 		} else {			
 			var current_hash = location.hash;
-			if(current_hash != $.history._curHash) {
-				$.history._curHash = current_hash;
-				$.history._callback(current_hash.replace(/^#/, ''));
+			if(current_hash != $.Dodo._curHash) {
+				$.Dodo._curHash = current_hash;
+				$.Dodo._callback(current_hash.replace(/^#/, ''));
 			}
 		}
 	},
@@ -145,8 +144,8 @@
 		this._curHash = newhash;
 		
 		if ($.browser.msie) {
-			var ihistory = $("#jQuery_history")[0]; 
-			var iframe = ihistory.contentWindow.document;
+			var iDodo = $("#jQuery_Dodo")[0]; 
+			var iframe = iDodo.contentWindow.document;
 			iframe.open();
 			iframe.close();
 			iframe.location.hash = newhash;
@@ -155,7 +154,7 @@
 		else if ($.browser.safari) {
 			this._dontCheck = true;			
 			this.add(hash);			
-			var fn = function() {$.history._dontCheck = false;};
+			var fn = function() {$.Dodo._dontCheck = false;};
 			window.setTimeout(fn, 200);
 			this._callback(hash);			
 			location.hash = newhash;
@@ -167,6 +166,6 @@
 });
 
 $(document).ready(function() {
-	$.history = new History(); 
+	$.Dodo = new Dodo(); 
 });
 })(jQuery);

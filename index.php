@@ -3,20 +3,19 @@
 <head>
 	<meta charset="utf-8">
 
-	<title>jQuery-History</title>
+	<title>Dodo</title>
 
     <script src="js/jquery.min.js"></script>
-    <script src="js/jquery-browser.js"></script>
-	<script src="js/jquery-history.js"></script>
+	<script src="js/dodo.js"></script>
 
 	<script>
 	    $(document).ready(function (){
-	        $.history.init(pageload);
+	        $.Dodo.init(pageload);
 		    $('a[href=' + window.location.hash + ']').addClass('selected');
 		    $('a[rel=ajax]').click(function(){
 			    var hash = this.href;
 			        hash = hash.replace(/^.*#/, '');
-	 		    $.history.load(hash);
+	 		    $.Dodo.load(hash);
 	 		    $('a[rel=ajax]').removeClass('selected');
 	 		    $(this).addClass('selected');
 			    return false;
