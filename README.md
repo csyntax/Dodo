@@ -1,4 +1,3 @@
-jQuery-History
+Dodo
 ==============
-
-jQuery + PHP to create AJAX web apps
+JavaScript + PHP to create AJAX web applications
