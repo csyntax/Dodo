@@ -3,11 +3,11 @@
 *
 * @author: Ivan Cvetomirov Ivanov
 * @License: MIT
-* @version: 1.0.2
+* @version: 1.0.3
 **/
 
 (function($) {
-    var ua = navigator.userAgent.toLowerCase(),
+    var userAgent = navigator.userAgent.toLowerCase(),
         match,
         browsers = [
             /(chrome)[ \/]([\w.]+)/,
@@ -16,38 +16,34 @@
             /(msie) ([\w.]+)/,
             /(mozilla)(?:.*? rv:([\w.]+))?/
         ],
-        i = browsers.length;
-    $.browser = {} || 0;
-    while ( i-- ) {
-        if ( (match = browsers[i].exec( ua )) && match[1] ) {
-            $.browser[ match[1] ] = true;
-            $.browser.version = match[2] || "0";
-            break;
-        }
-    }
-})( window.jQuery || window );
-
-
-(function($) {
-    var ua = navigator.userAgent.toLowerCase(),
-        match,
-        platform = [
+		platforms = [
             /(ip\w+).*?os ([\w_]+)/,
             /(android)[ \/]([\w.]+)/,
             /(blackberry)(?:\d*?\/|.*?version\/)([\w.]+)/,
             /(windows phone)( os)? ([\w.]+)/,
             /(symbian)(?:os\/([\w.]+))?/
-        ],
-        i = platform.length;
-
-    $.platform = {} || 0;
-    while ( i-- ) {
-        if ( (match = platform[i].exec( ua )) && match[1] ) {
-            $.platform[ match[1].replace(" p", "P") ] = true;
-            $.platform.version = match[2].split("_").join(".") || "0";
-            break;
-        }
-    }
+        ];
+		
+        b = browsers.length;
+		p = platforms.length;
+		
+		$.browser = {} || 0;
+		 $.platforms = {} || 0;
+		 
+		while ( b-- ) {
+			if ( (match = browsers[b].exec( userAgent )) && match[1] ) {
+				$.browser[ match[1] ] = true;
+				$.browser.version = match[2] || "0";
+				break;
+			}
+		}  
+		while ( p-- ) {
+			if ( (match = platforms[p].exec( userAgent )) && match[1] ) {
+				$.platforms[ match[1].replace(" p", "P") ] = true;
+				$.platforms.version = match[2].split("_").join(".") || "0";
+				break;
+			}
+		}
 })( window.jQuery || window );
  
 (function($) {
