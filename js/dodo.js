@@ -1,50 +1,49 @@
-/**
-* Dodo
-*
-* @author: Ivan Cvetomirov Ivanov
-* @License: MIT
-* @version: 1.0.3
-**/
+/*
+	* Dodo
+	* @author: Ivan Cvetomirov Ivanov
+	* @License: MIT
+	* @version: 1.0.4
+*/
 
 (function($) {
-    var userAgent = navigator.userAgent.toLowerCase(),
-        match,
-        browsers = [
-            /(chrome)[ \/]([\w.]+)/,
-            /(safari)[ \/]([\w.]+)/,
-            /(opera)(?:.*version)?[ \/]([\w.]+)/,
-            /(msie) ([\w.]+)/,
-            /(mozilla)(?:.*? rv:([\w.]+))?/
-        ],
-		platforms = [
-            /(ip\w+).*?os ([\w_]+)/,
-            /(android)[ \/]([\w.]+)/,
-            /(blackberry)(?:\d*?\/|.*?version\/)([\w.]+)/,
-            /(windows phone)( os)? ([\w.]+)/,
-            /(symbian)(?:os\/([\w.]+))?/
-        ];
+    var userAgent = navigator.userAgent.toLowerCase();
+    var match;
+    var	browsers = [
+        /(chrome)[ \/]([\w.]+)/,
+        /(safari)[ \/]([\w.]+)/,
+        /(opera)(?:.*version)?[ \/]([\w.]+)/,
+        /(msie) ([\w.]+)/,
+        /(mozilla)(?:.*? rv:([\w.]+))?/
+    ];
+	var platforms = [
+        /(ip\w+).*?os ([\w_]+)/,
+        /(android)[ \/]([\w.]+)/,
+        /(blackberry)(?:\d*?\/|.*?version\/)([\w.]+)/,
+        /(windows phone)( os)? ([\w.]+)/,
+        /(symbian)(?:os\/([\w.]+))?/
+    ];
 		
-        b = browsers.length;
-		p = platforms.length;
+    b = browsers.length;
+    p = platforms.length;
 		
-		$.browser = {} || 0;
-		 $.platforms = {} || 0;
+	$.browser = {} || 0;
+	$.platforms = {} || 0;
 		 
-		while ( b-- ) {
-			if ( (match = browsers[b].exec( userAgent )) && match[1] ) {
-				$.browser[ match[1] ] = true;
-				$.browser.version = match[2] || "0";
-				break;
-			}
-		}  
-		while ( p-- ) {
-			if ( (match = platforms[p].exec( userAgent )) && match[1] ) {
-				$.platforms[ match[1].replace(" p", "P") ] = true;
-				$.platforms.version = match[2].split("_").join(".") || "0";
-				break;
-			}
+	while ( b-- ) {
+		if ( (match = browsers[b].exec( userAgent )) && match[1] ) {
+			$.browser[ match[1] ] = true;
+			$.browser.version = match[2] || "0";
+			break;
 		}
-})( window.jQuery || window );
+	}  
+	while ( p-- ) {
+		if ( (match = platforms[p].exec( userAgent )) && match[1] ) {
+			$.platforms[ match[1].replace(" p", "P") ] = true;
+			$.platforms.version = match[2].split("_").join(".") || "0";
+			break;
+		}
+	}
+})(jQuery || window );
  
 (function($) {
 	function Dodo() {
@@ -62,8 +61,10 @@
 					this._curHash = '#';
 				}
 		
-				$("body").prepend('<iframe id="jQuery_Dodo" style="display: none;"></iframe>');
-				var iframe = $("#jQuery_Dodo")[0].contentWindow.document;
+				$("body").prepend('<iframe id="Dodo" style="display: none;"></iframe>');
+				
+				var iframe = $("#Dodo")[0].contentWindow.document;
+				
 				iframe.open();
 				iframe.close();
 				iframe.location.hash = this._curHash;
@@ -85,7 +86,7 @@
 		},	
 		_check: function() {
 			if($.browser.msie) {			
-				var iDodo = $("#jQuery_Dodo")[0];
+				var iDodo = $("#Dodo")[0];
 				var iframe = iDodo.contentDocument || iDodo.contentWindow.document;
 				var current_hash = iframe.location.hash;
 				
@@ -137,12 +138,13 @@
 			newhash = '#' + hash;
 			location.hash = newhash;
 		}
+
 		this._curHash = newhash;
 		
 		if ($.browser.msie) {
-			var iDodo = $("#jQuery_Dodo")[0]; 
+			var iDodo = $("#Dodo")[0]; 
 			var iframe = iDodo.contentWindow.document;
-			iframe.open();
+		iframe.open();
 			iframe.close();
 			iframe.location.hash = newhash;
 			this._callback(hash);
@@ -150,7 +152,9 @@
 		else if ($.browser.safari) {
 			this._dontCheck = true;			
 			this.add(hash);			
+			
 			var fn = function() {$.Dodo._dontCheck = false;};
+			
 			window.setTimeout(fn, 200);
 			this._callback(hash);			
 			location.hash = newhash;
@@ -164,4 +168,5 @@
 $(document).ready(function() {
 	$.Dodo = new Dodo(); 
 });
+
 })(jQuery);
