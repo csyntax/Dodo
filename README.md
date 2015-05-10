@@ -1,3 +1,3 @@
 Dodo
 ==============
-JavaScript + PHP to create AJAX web applications
+jQuery Ajax requester with Hashtag;
