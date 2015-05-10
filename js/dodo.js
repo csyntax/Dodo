@@ -2,7 +2,7 @@
 	* Dodo
 	* @author: Ivan Cvetomirov Ivanov
 	* @License: MIT
-	* @version: 1.0.4
+	* @version: 1.0.5
 */
 
 (function($) {
