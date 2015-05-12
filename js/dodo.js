@@ -1,51 +1,28 @@
 /*
-	* Dodo
-	* @author: Ivan Cvetomirov Ivanov
-	* @License: MIT
-	* @version: 1.0.5
-*/
-
+	Dodo v1.0.6
+	Copyright 2015 Ivan Cvetomirov Ivanov
+*/ 
 (function($) {
-    var userAgent = navigator.userAgent.toLowerCase();
-    var match;
+	var userAgent = navigator.userAgent.toLowerCase();
     var	browsers = [
         /(chrome)[ \/]([\w.]+)/,
         /(safari)[ \/]([\w.]+)/,
         /(opera)(?:.*version)?[ \/]([\w.]+)/,
         /(msie) ([\w.]+)/,
-        /(mozilla)(?:.*? rv:([\w.]+))?/
-    ];
-	var platforms = [
-        /(ip\w+).*?os ([\w_]+)/,
-        /(android)[ \/]([\w.]+)/,
-        /(blackberry)(?:\d*?\/|.*?version\/)([\w.]+)/,
-        /(windows phone)( os)? ([\w.]+)/,
-        /(symbian)(?:os\/([\w.]+))?/
-    ];
-		
-    b = browsers.length;
-    p = platforms.length;
+        /(mozilla)(?:.*? rv:([\w.]+))?/,
+    ];		
+    var b = browsers.length;
 		
 	$.browser = {} || 0;
-	$.platforms = {} || 0;
 		 
-	while ( b-- ) {
+	while (b--) {
 		if ( (match = browsers[b].exec( userAgent )) && match[1] ) {
 			$.browser[ match[1] ] = true;
 			$.browser.version = match[2] || "0";
 			break;
 		}
-	}  
-	while ( p-- ) {
-		if ( (match = platforms[p].exec( userAgent )) && match[1] ) {
-			$.platforms[ match[1].replace(" p", "P") ] = true;
-			$.platforms.version = match[2].split("_").join(".") || "0";
-			break;
-		}
 	}
-})(jQuery || window );
- 
-(function($) {
+	
 	function Dodo() {
 		this._curHash = '';
 		this._callback = function(hash){};
@@ -92,6 +69,7 @@
 				
 				if(current_hash != $.Dodo._curHash) {			
 					location.hash = current_hash;
+					
 					$.Dodo._curHash = current_hash;
 					$.Dodo._callback(current_hash.replace(/^#/, ''));
 				}
@@ -100,73 +78,74 @@
 				
 					var DodoDelta = Dodo.length - $.Dodo._DodoBackStack.length;				
 				
+					// Todo
 					if (DodoDelta) { 
 						$.Dodo._isFirst = false;
 						if (DodoDelta < 0) {
 							for (var i = 0; i < Math.abs(DodoDelta); i++) $.Dodo._DodoForwardStack.unshift($.Dodo._DodoBackStack.pop());
 						} else { 
 							for (var i = 0; i < DodoDelta; i++) $.Dodo._DodoBackStack.push($.Dodo._DodoForwardStack.shift());
+						}// Todo
+
+						var cachedHash = $.Dodo._DodoBackStack[$.Dodo._DodoBackStack.length - 1];
+						if (cachedHash != undefined) {
+							$.Dodo._curHash = location.hash;
+							$.Dodo._callback(cachedHash);
 						}
-					var cachedHash = $.Dodo._DodoBackStack[$.Dodo._DodoBackStack.length - 1];
-					if (cachedHash != undefined) {
-						$.Dodo._curHash = location.hash;
-						$.Dodo._callback(cachedHash);
+					} else if ($.Dodo._DodoBackStack[$.Dodo._DodoBackStack.length - 1] == undefined && !$.Dodo._isFirst) {					
+						if (document.URL.indexOf('#') >= 0) {
+							$.Dodo._callback(document.URL.split('#')[1]);
+						} else {
+							$.Dodo._callback('');
+						}
+						$.Dodo._isFirst = true;
 					}
-				} else if ($.Dodo._DodoBackStack[$.Dodo._DodoBackStack.length - 1] == undefined && !$.Dodo._isFirst){					
-					if (document.URL.indexOf('#') >= 0) {
-						$.Dodo._callback(document.URL.split('#')[1]);
-					} else {
-						$.Dodo._callback('');
-					}
-					$.Dodo._isFirst = true;
+				}
+			} else {			
+				var current_hash = location.hash;
+			
+				if(current_hash != $.Dodo._curHash) {
+					$.Dodo._curHash = current_hash;
+					$.Dodo._callback(current_hash.replace(/^#/, ''));
 				}
 			}
-		} else {			
-			var current_hash = location.hash;
-			if(current_hash != $.Dodo._curHash) {
-				$.Dodo._curHash = current_hash;
-				$.Dodo._callback(current_hash.replace(/^#/, ''));
+		},
+		load: function(hash) {
+			var newhash;
+		
+			if ($.browser.safari) {
+				newhash = hash;
+			} else {
+				newhash = '#' + hash;
+				location.hash = newhash;
+			}
+
+			this._curHash = newhash;
+			
+			if ($.browser.msie) {
+				var iDodo = $("#Dodo")[0]; 
+				var iframe = iDodo.contentWindow.document;
+				
+				iframe.open();
+				iframe.close();
+				iframe.location.hash = newhash;
+				this._callback(hash);
+			} else if ($.browser.safari) {
+				this._dontCheck = true;			
+				this.add(hash);			
+			
+				var fn = function() {$.Dodo._dontCheck = false;};
+			
+				window.setTimeout(fn, 200);
+				this._callback(hash);			
+				location.hash = newhash;
+			} else {
+		  		this._callback(hash);
 			}
 		}
-	},
-	load: function(hash) {
-		var newhash;
-		
-		if ($.browser.safari) {
-			newhash = hash;
-		} else {
-			newhash = '#' + hash;
-			location.hash = newhash;
-		}
+	});
 
-		this._curHash = newhash;
-		
-		if ($.browser.msie) {
-			var iDodo = $("#Dodo")[0]; 
-			var iframe = iDodo.contentWindow.document;
-		iframe.open();
-			iframe.close();
-			iframe.location.hash = newhash;
-			this._callback(hash);
-		}
-		else if ($.browser.safari) {
-			this._dontCheck = true;			
-			this.add(hash);			
-			
-			var fn = function() {$.Dodo._dontCheck = false;};
-			
-			window.setTimeout(fn, 200);
-			this._callback(hash);			
-			location.hash = newhash;
-		}
-		else {
-		  this._callback(hash);
-		}
-	}
-});
-
-$(document).ready(function() {
-	$.Dodo = new Dodo(); 
-});
-
+	$(document).ready(function() {
+		$.Dodo = new Dodo(); 
+	});
 })(jQuery);
