@@ -1,3 +1,3 @@
 Dodo
 ==============
-jQuery Ajax requester with Hashtag;
+jQuery Ajax requester
