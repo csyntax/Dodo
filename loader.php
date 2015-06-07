@@ -1,5 +1,5 @@
 <?php
-	if(isset($_GET["page"])){
+	if(isset($_GET["page"])) {
 		switch($_GET['page']) {
 			case '#page1':
 				$page = 'Page 1';
@@ -15,4 +15,4 @@
 				break;
 		}
 		echo $page;
-	}	
+	}

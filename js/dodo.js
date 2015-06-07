@@ -1,9 +1,12 @@
 /*
-	Dodo v1.0.7
+	Dodo v1.0.8
 	Copyright 2015 Ivan Cvetomirov Ivanov
 */
+if (typeof jQuery == "undefined") {
+	throw new Error("Dodo requires jQuery")
+};
 (function($) {
-	var userAgent = navigator.userAgent.toLowerCase();
+		var userAgent = navigator.userAgent.toLowerCase();
     var	browsers = [
         /(chrome)[ \/]([\w.]+)/,
         /(safari)[ \/]([\w.]+)/,
@@ -13,19 +16,19 @@
     ];
     var b = browsers.length;
 
-	$.browser = {} || 0;
+		$.browser = {} || 0;
 
-	while (b--) {
-		if ( (match = browsers[b].exec( userAgent )) && match[1] ) {
-			$.browser[ match[1] ] = true;
-			$.browser.version = match[2] || "0";
-			break;
+		while (b--) {
+			if ( (match = browsers[b].exec( userAgent )) && match[1] ) {
+				$.browser[ match[1] ] = true;
+				$.browser.version = match[2] || "0";
+				break;
+			}
 		}
-	}
 
 	function Dodo() {
-		this._curHash = '';
-		this._callback = function(hash){};
+		this._curHash = "";
+		this._callback = function (hash) { };
 	};
 
 	$.extend(Dodo.prototype, {
@@ -34,8 +37,8 @@
 			this._curHash = location.hash;
 
 			if($.browser.msie) {
-				if (this._curHash == '') {
-					this._curHash = '#';
+				if (this._curHash == "") {
+					this._curHash = "#";
 				}
 
 				$("body").prepend('<iframe id="Dodo" style="display: none;"></iframe>');
@@ -78,16 +81,16 @@
 
 					var DodoDelta = Dodo.length - $.Dodo._DodoBackStack.length;
 
-					// Todo
 					if (DodoDelta) {
 						$.Dodo._isFirst = false;
 						if (DodoDelta < 0) {
 							for (var i = 0; i < Math.abs(DodoDelta); i++) $.Dodo._DodoForwardStack.unshift($.Dodo._DodoBackStack.pop());
 						} else {
 							for (var i = 0; i < DodoDelta; i++) $.Dodo._DodoBackStack.push($.Dodo._DodoForwardStack.shift());
-						}// Todo
+						}
 
 						var cachedHash = $.Dodo._DodoBackStack[$.Dodo._DodoBackStack.length - 1];
+
 						if (cachedHash != undefined) {
 							$.Dodo._curHash = location.hash;
 							$.Dodo._callback(cachedHash);
@@ -134,7 +137,9 @@
 				this._dontCheck = true;
 				this.add(hash);
 
-				var fn = function() {$.Dodo._dontCheck = false;};
+				var fn = function() {
+					$.Dodo._dontCheck = false;
+				};
 
 				window.setTimeout(fn, 200);
 				this._callback(hash);
