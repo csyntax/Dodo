@@ -5,45 +5,40 @@
 
 		<title>Dodo</title>
 
-  	<!--<script src="js/jquery.min.js"></script>-->
+  	<script src="js/jquery.min.js"></script>
 		<script src="js/dodo.js"></script>
 
 		<script>
 		    $(document).ready(function () {
 		      $.Dodo.init(pageload);
-			    $('a[href=' + window.location.hash + ']').addClass('selected');
-			    $('a[rel=ajax]').click(function(){
+			    $("a[href=" + window.location.hash + "]").addClass("selected");
+			    $("a[rel=ajax]").click(function(){
 				    var hash = this.href;
 
-						hash = hash.replace(/^.*#/, '');
+						hash = hash.replace(/^.*#/, "");
 
 						$.Dodo.load(hash);
-		 		    $('a[rel=ajax]').removeClass('selected');
-		 		    $(this).addClass('selected');
+		 		    $("a[rel=ajax]").removeClass("selected");
+		 		    $(this).addClass("selected");
 
 						return false;
 			    });
 		    });
 
 		    function pageload(hash) {
-			    if (hash){
-						getPage();
+			    if (hash) {
+						$.ajax({
+							url: "loader.php",
+							type: "GET",
+							data: "page=" + encodeURIComponent(document.location.hash),
+							cache: false,
+							success: function (res) {
+								$("#content").html(res)
+							}
+						});
 					} else {
 						return 0;
 					}
-		    }
-
-		    function getPage() {
-			    var data = "page=" + encodeURIComponent(document.location.hash);
-			    $.ajax({
-				    url: "loader.php",
-				    type: "GET",
-				    data: data,
-				    cache: false,
-				    success: function (html) {
-					    $('#content').html(html);
-					}
-			    });
 		    }
 		</script>
 	</head>
