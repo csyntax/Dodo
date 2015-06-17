@@ -2,6 +2,8 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 		<title>Dodo</title>
 
@@ -10,7 +12,7 @@
 
 		<script>
 		    $(document).ready(function () {
-		      $.Dodo.init(pageload);
+		      $.Dodo.init(loader);
 			    $("a[href=" + window.location.hash + "]").addClass("selected");
 			    $("a[rel=ajax]").click(function(){
 				    var hash = this.href;
@@ -25,7 +27,7 @@
 			    });
 		    });
 
-		    function pageload(hash) {
+		    function loader(hash) {
 			    if (hash) {
 						$.ajax({
 							url: "loader.php",
@@ -33,7 +35,7 @@
 							data: "page=" + encodeURIComponent(document.location.hash),
 							cache: false,
 							success: function (res) {
-								$("#content").html(res)
+								$("#content").html(res);
 							}
 						});
 					} else {

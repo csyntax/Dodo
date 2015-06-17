@@ -1,5 +1,5 @@
 /*
-	Dodo v1.0.9
+	Dodo v1.1.0
 	Copyright 2015 Ivan Cvetomirov Ivanov
 */
 if (typeof jQuery == "undefined") {
@@ -7,6 +7,7 @@ if (typeof jQuery == "undefined") {
 };
 (function($) {
 		var userAgent = navigator.userAgent.toLowerCase();
+
     var	browsers = [
         /(chrome)[ \/]([\w.]+)/,
         /(safari)[ \/]([\w.]+)/,
@@ -21,7 +22,7 @@ if (typeof jQuery == "undefined") {
 		while (b--) {
 			if ( (match = browsers[b].exec( userAgent )) && match[1] ) {
 				$.browser[ match[1] ] = true;
-				$.browser.version = match[2] || "0";
+				$.browser.version = match[2] || 0;
 				break;
 			}
 		}
@@ -33,8 +34,8 @@ if (typeof jQuery == "undefined") {
 
 		$.extend(Dodo.prototype, {
 			init: function(callback) {
-				this._callback = callback;
 				this._curHash = location.hash;
+				this._callback = callback;
 
 				if($.browser.msie) {
 					if (this._curHash == "") {
