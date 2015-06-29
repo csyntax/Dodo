@@ -1,18 +1,18 @@
 <?php
-	if(isset($_GET["page"])) {
+	if(isset($_GET['page'])) {
 		switch($_GET['page']) {
 			case '#page1':
 				$page = 'Page 1';
-				break;
+			break;
 			case '#page2':
 				$page = 'Page 2';
-				break;
+			break;
 			case '#page3':
 				$page = 'Page 3';
-				break;
+			break;
 			case '#page4':
 				$page = 'Page 4';
-				break;
+			break;
 		}
 		echo $page;
 	}

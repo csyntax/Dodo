@@ -39,7 +39,7 @@ if (typeof jQuery == "undefined") {
 
 				if($.browser.msie) {
 					if (this._curHash == "") {
-						this._curHash = "#";
+						this._curHash = "#!";
 					}
 
 					$("body").prepend('<iframe id="Dodo" style="display: none;"></iframe>');
@@ -119,7 +119,7 @@ if (typeof jQuery == "undefined") {
 				if ($.browser.safari) {
 					newhash = hash;
 				} else {
-					newhash = '#' + hash;
+					newhash = '#!' + hash;
 					location.hash = newhash;
 				}
 
